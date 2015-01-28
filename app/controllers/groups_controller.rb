@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-  before_action :set_users, only: [:new, :edit]
+  before_action :set_users, only: [:new, :edit, :copy]
 
   # GET /groups
   # GET /groups.json
@@ -15,27 +15,44 @@ class GroupsController < ApplicationController
 
   # GET /groups/new
   def new
+    #@group = Group.new(:name => params[:name])
     @group = Group.new
   end
 
   # GET /groups/1/edit
   def edit
   end
+  
+  def copy
+    @old = Group.find(params[:id])
+    @group = Group.new
+    @group.attributes = @old.attributes
+    
+    render :action => "new"
+  end
 
   # POST /groups
   # POST /groups.json
   def create
     @group = Group.new(group_params)
-
-    respond_to do |format|
-      if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
-        format.json { render :show, status: :created, location: @group }
-      else
-        format.html { render :new }
-        format.json { render json: @group.errors, status: :unprocessable_entity }
-      end
+    @group.save
+    #respond_to do |format|
+    #  if @group.save
+    #    format.html { redirect_to @group, notice: 'Group was successfully created.' }
+    #    format.json { render :show, status: :created, location: @group }
+    #  else
+    #    format.html { render :new }
+    #    format.json { render json: @group.errors, status: :unprocessable_entity }
+    #  end
+    #end
+    if @group.description == "true"
+      #redirect_to edit_user_path(1) 
+      redirect_to copy_group_path(@group.id)
+      #redirect_to users_path
+    else
+      redirect_to groups_path
     end
+    #redirect_to :action => "new", :name => "test" 
   end
 
   # PATCH/PUT /groups/1

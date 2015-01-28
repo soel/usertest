@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :groups
+  resources :groups do
+    member do
+      get :copy 
+    end
+  end
 
   resources :users
 

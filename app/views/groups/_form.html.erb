@@ -16,8 +16,8 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
+  	<%= f.label :description %><br>
+  	<%= f.check_box :description, {}, true, false %>
   </div>
   <div class="actions">
     <%= f.submit %>
